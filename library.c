@@ -937,7 +937,7 @@ int openconnect_setup_tun_device(struct openconnect_info *vpninfo,
 	prepare_script_env(vpninfo);
 	script_config_tun(vpninfo, "pre-init");
 
-    printf("step4\n");
+    printf("step4.0\n");
 	tun_fd = os_setup_tun(vpninfo);
 	if (tun_fd < 0)
 		printf("step4.1\n");
