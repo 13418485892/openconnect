@@ -940,6 +940,7 @@ int openconnect_setup_tun_device(struct openconnect_info *vpninfo,
     printf("step4\n");
 	tun_fd = os_setup_tun(vpninfo);
 	if (tun_fd < 0)
+		printf("step4.1\n");
 		return tun_fd;
 
 #ifdef _WIN32
@@ -948,6 +949,7 @@ int openconnect_setup_tun_device(struct openconnect_info *vpninfo,
 		script_setenv_int(vpninfo, "TUNIDX", vpninfo->tun_idx);
     printf("step6\n");
 #endif
+	printf("step4.2\n");
 	legacy_ifname = openconnect_utf8_to_legacy(vpninfo, vpninfo->ifname);
 	script_setenv(vpninfo, "TUNDEV", legacy_ifname, 0);
 
