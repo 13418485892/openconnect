@@ -467,8 +467,8 @@ static char* get_all_ifnames()
 			       KEY_READ, &adapters_key);
 
 	if (status) {
-		vpn_progress(vpninfo, PRG_ERR,
-			     _("Error accessing registry key for network adapters\n"));
+		//vpn_progress(vpninfo, PRG_ERR,
+		//	     _("Error accessing registry key for network adapters\n"));
 		return -EIO;
 	}
 
