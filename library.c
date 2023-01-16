@@ -924,39 +924,39 @@ int openconnect_setup_tun_device(struct openconnect_info *vpninfo,
 {
 	intptr_t tun_fd;
 	char *legacy_ifname;
-    printf("step1\n")
+    printf("step1\n");
 
 	UTF8CHECK(vpnc_script);
 	UTF8CHECK(ifname);
 
-    printf("step2\n")
+    printf("step2\n");
 	STRDUP(vpninfo->vpnc_script, vpnc_script);
 	STRDUP(vpninfo->ifname, ifname);
 
-    printf("step3\n")
+    printf("step3\n");
 	prepare_script_env(vpninfo);
 	script_config_tun(vpninfo, "pre-init");
 
-    printf("step4\n")
+    printf("step4\n");
 	tun_fd = os_setup_tun(vpninfo);
 	if (tun_fd < 0)
 		return tun_fd;
 
 #ifdef _WIN32
-    printf("step5\n")
+    printf("step5\n");
 	if (vpninfo->tun_idx != -1)
 		script_setenv_int(vpninfo, "TUNIDX", vpninfo->tun_idx);
-    printf("step6\n")
+    printf("step6\n");
 #endif
 	legacy_ifname = openconnect_utf8_to_legacy(vpninfo, vpninfo->ifname);
 	script_setenv(vpninfo, "TUNDEV", legacy_ifname, 0);
 
-    printf("step7\n")
+    printf("step7\n");
 	if (legacy_ifname != vpninfo->ifname)
 		free(legacy_ifname);
 	script_config_tun(vpninfo, "connect");
 
-    printf("step8\n")
+    printf("step8\n");
 	return openconnect_setup_tun_fd(vpninfo, tun_fd);
 }
 
