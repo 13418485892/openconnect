@@ -150,7 +150,9 @@ static intptr_t search_taps(struct openconnect_info *vpninfo, tap_callback *cb, 
         printf("tun-win32 step13\n");
 		found++;
 
+		printf("vpn ifName:%s,   namebuf:%s", vpninfo->ifname, namebuf->data);
 		if (vpninfo->ifname && strcmp(namebuf->data, vpninfo->ifname)) {
+			printf("tun-win32 step13.1\n");
 			vpn_progress(vpninfo, PRG_DEBUG,
 				     _("Ignoring non-matching TAP interface \"%s\"\n"),
 				     namebuf->data);
