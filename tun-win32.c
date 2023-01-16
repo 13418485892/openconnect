@@ -107,8 +107,10 @@ static intptr_t search_taps(struct openconnect_info *vpninfo, tap_callback *cb, 
 					  (unsigned char *)buf, &len);
         printf("tun-win32 step8\n");
 		printf("tun-win32 step8 status = %d\n", status);
+		// 17无法找到
 		if (status || type != REG_SZ || strcmp(buf, TAP_COMPONENT_ID)) {
 			RegCloseKey(hkey);
+			printf("tun-win32 step8.1 buf = %s i=%d tapid=%s\n", buf, i, TAP_COMPONENT_ID);
 			continue;
 		}
         
