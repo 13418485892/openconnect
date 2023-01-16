@@ -130,6 +130,7 @@ static int link_proto(struct openconnect_info *vpninfo, int unit_nr,
 
 intptr_t os_setup_tun(struct openconnect_info *vpninfo)
 {
+    printf("step  tun.c 131\n");
 	int tun_fd = -1;
 	static char tun_name[80];
 	int unit_nr;
@@ -179,6 +180,7 @@ intptr_t os_setup_tun(struct openconnect_info *vpninfo)
 
 intptr_t os_setup_tun(struct openconnect_info *vpninfo)
 {
+    printf("step  tun.c 180\n");
 	vpn_progress(vpninfo, PRG_ERR,
 		     _("tun device is unsupported on this platform\n"));
 	return -EOPNOTSUPP;
@@ -220,6 +222,7 @@ static int set_tun_mtu(struct openconnect_info *vpninfo)
 #ifdef IFF_TUN /* Linux */
 intptr_t os_setup_tun(struct openconnect_info *vpninfo)
 {
+    printf("step  tun.c 221\n");
 	int tun_fd = -1;
 	struct ifreq ifr;
 	int tunerr;
@@ -298,6 +301,7 @@ static int bsd_open_tun(char *tun_name)
 
 intptr_t os_setup_tun(struct openconnect_info *vpninfo)
 {
+    printf("step  tun.c 304\n");
 	static char tun_name[80];
 	int unit_nr = 0;
 	int tun_fd = -1;
