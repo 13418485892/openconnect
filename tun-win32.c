@@ -544,11 +544,11 @@ static char* get_all_ifnames()
 				     namebuf->data);
 			continue;
 		}
-		*/
 
-		//ret = cb(vpninfo, buf, namebuf->data);
+		ret = cb(vpninfo, buf, namebuf->data);
 		if (!all)
 			break;
+		*/
 	}
 
 	RegCloseKey(adapters_key);
