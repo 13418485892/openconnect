@@ -120,7 +120,7 @@ static intptr_t search_taps(struct openconnect_info *vpninfo, tap_callback *cb, 
 		RegCloseKey(hkey);
 		if (status || type != REG_SZ)
 			continue;
-        printf("tun-win32 step10\n");
+        printf("tun-win32 step10 keyname= %s\n", keyname);
 		snprintf(keyname, sizeof(keyname), "%s\\%s\\Connection",
 			 CONNECTIONS_KEY, buf);
 
