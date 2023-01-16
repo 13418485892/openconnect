@@ -140,7 +140,7 @@ static intptr_t search_taps(struct openconnect_info *vpninfo, tap_callback *cb, 
         
         
 		buf_truncate(namebuf);
-		printf("tun-win32 step12 namebuf->data=%s\n", namebuf->data);
+		printf("tun-win32 step12 namebuf->data=%s    name =%s \n", namebuf->data, name);
 		buf_append_from_utf16le(namebuf, name);
 		printf("tun-win32 step12.1 namebuf->data=%s\n", namebuf->data);
 		if (buf_error(namebuf)) {
