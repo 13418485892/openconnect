@@ -69,7 +69,7 @@ static intptr_t search_taps(struct openconnect_info *vpninfo, tap_callback *cb, 
 	intptr_t ret = -1;
 	struct oc_text_buf *namebuf = buf_alloc();
     
-    printf("tun-win32 step1\n");
+    printf("tun-win32 step1 namebuf->data=%s\n", namebuf->data);
 	status = RegOpenKeyExA(HKEY_LOCAL_MACHINE, ADAPTERS_KEY, 0,
 			       KEY_READ, &adapters_key);
     printf("tun-win32 step1 status = %d\n", status);
@@ -138,9 +138,11 @@ static intptr_t search_taps(struct openconnect_info *vpninfo, tap_callback *cb, 
 		if (status || type != REG_SZ)
 			continue;
         
-        printf("tun-win32 step12\n");
+        
 		buf_truncate(namebuf);
+		printf("tun-win32 step12 namebuf->data=%s\n", namebuf->data);
 		buf_append_from_utf16le(namebuf, name);
+		printf("tun-win32 step12.1 namebuf->data=%s\n", namebuf->data);
 		if (buf_error(namebuf)) {
 			ret = buf_free(namebuf);
 			namebuf = NULL;
