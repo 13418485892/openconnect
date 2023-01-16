@@ -72,8 +72,7 @@ static intptr_t search_taps(struct openconnect_info *vpninfo, tap_callback *cb, 
     printf("tun-win32 step1\n");
 	status = RegOpenKeyExA(HKEY_LOCAL_MACHINE, ADAPTERS_KEY, 0,
 			       KEY_READ, &adapters_key);
-    
-    printf("tun-win32 step2\n");
+    printf("tun-win32 step1 status = %d\n", status);
 	if (status) {
 		vpn_progress(vpninfo, PRG_ERR,
 			     _("Error accessing registry key for network adapters\n"));
@@ -86,7 +85,7 @@ static intptr_t search_taps(struct openconnect_info *vpninfo, tap_callback *cb, 
 		status = RegEnumKeyExA(adapters_key, i++, buf, &len,
 				       NULL, NULL, NULL, NULL);
         printf("tun-win32 step4\n");
-        printf("tun-win32 status = %d\n", status);
+        printf("tun-win32 step4 status = %d\n", status);
 		if (status) {
 			if (status != ERROR_NO_MORE_ITEMS)
 				ret = -1;
@@ -99,6 +98,7 @@ static intptr_t search_taps(struct openconnect_info *vpninfo, tap_callback *cb, 
         printf("tun-win32 step6\n");
 		status = RegOpenKeyExA(HKEY_LOCAL_MACHINE, keyname, 0,
 				       KEY_QUERY_VALUE, &hkey);
+		printf("tun-win32 step6 status = %d\n", status);
 		if (status)
 			continue;
         printf("tun-win32 step7\n");
@@ -106,6 +106,7 @@ static intptr_t search_taps(struct openconnect_info *vpninfo, tap_callback *cb, 
 		status = RegQueryValueExA(hkey, "ComponentId", NULL, &type,
 					  (unsigned char *)buf, &len);
         printf("tun-win32 step8\n");
+		printf("tun-win32 step8 status = %d\n", status);
 		if (status || type != REG_SZ || strcmp(buf, TAP_COMPONENT_ID)) {
 			RegCloseKey(hkey);
 			continue;
@@ -115,6 +116,7 @@ static intptr_t search_taps(struct openconnect_info *vpninfo, tap_callback *cb, 
 		len = sizeof(buf);
 		status = RegQueryValueExA(hkey, "NetCfgInstanceId", NULL,
 					  &type, (unsigned char *)buf, &len);
+		printf("tun-win32 step9 status = %d\n", status);
 		RegCloseKey(hkey);
 		if (status || type != REG_SZ)
 			continue;
@@ -124,12 +126,14 @@ static intptr_t search_taps(struct openconnect_info *vpninfo, tap_callback *cb, 
 
 		status = RegOpenKeyExA(HKEY_LOCAL_MACHINE, keyname, 0,
 				       KEY_QUERY_VALUE, &hkey);
+		printf("tun-win32 step10 status = %d\n", status);
 		if (status)
 			continue;
         printf("tun-win32 step11\n");
 		len = sizeof(name);
 		status = RegQueryValueExW(hkey, L"Name", NULL, &type,
 					 (unsigned char *)name, &len);
+		printf("tun-win32 step11 status = %d\n", status);
 		RegCloseKey(hkey);
 		if (status || type != REG_SZ)
 			continue;
