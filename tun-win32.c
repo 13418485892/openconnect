@@ -84,7 +84,7 @@ static intptr_t search_taps(struct openconnect_info *vpninfo, tap_callback *cb, 
 		len = sizeof(buf);
 		status = RegEnumKeyExA(adapters_key, i++, buf, &len,
 				       NULL, NULL, NULL, NULL);
-        printf("tun-win32 step4\n");
+        printf("tun-win32 step4 i=%d buf = %s\n", i, buf);
         printf("tun-win32 step4 status = %d\n", status);
 		if (status) {
 			if (status != ERROR_NO_MORE_ITEMS)
