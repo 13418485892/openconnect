@@ -939,9 +939,12 @@ int openconnect_setup_tun_device(struct openconnect_info *vpninfo,
 
     printf("step4.0\n");
 	tun_fd = os_setup_tun(vpninfo);
+	
 	if (tun_fd < 0)
+	{
 		printf("step4.1\n");
 		return tun_fd;
+	}
 
 #ifdef _WIN32
     printf("step5\n");
