@@ -497,7 +497,6 @@ static char* get_all_ifnames()
 		status = RegQueryValueExA(hkey, "ComponentId", NULL, &type,
 					  (unsigned char *)buf, &len);
 
-		// 17无法找到
 		if (status || type != REG_SZ || strcmp(buf, TAP_COMPONENT_ID)) {
 			RegCloseKey(hkey);
 			printf("tun-win32 step8.1 buf = %s i=%d tapid=%s\n", buf, i, TAP_COMPONENT_ID);
@@ -538,14 +537,16 @@ static char* get_all_ifnames()
 
 		found++;
 		
+		/*
 		if (vpninfo->ifname && strcmp(namebuf->data, vpninfo->ifname)) {
 			vpn_progress(vpninfo, PRG_DEBUG,
 				     _("Ignoring non-matching TAP interface \"%s\"\n"),
 				     namebuf->data);
 			continue;
 		}
+		*/
 
-		ret = cb(vpninfo, buf, namebuf->data);
+		//ret = cb(vpninfo, buf, namebuf->data);
 		if (!all)
 			break;
 	}
@@ -553,9 +554,11 @@ static char* get_all_ifnames()
 	RegCloseKey(adapters_key);
 	buf_free(namebuf);
 
+	/*
 	if (!found)
 		vpn_progress(vpninfo, PRG_ERR,
 			     _("No Windows-TAP adapters found. Is the driver installed?\n"));
+	*/
 
-	return ret;
+	return 0;
 }
