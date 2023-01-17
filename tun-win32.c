@@ -452,7 +452,7 @@ int openconnect_setup_tun_script(struct openconnect_info *vpninfo,
 
 
 // darren_add
-static char* get_all_ifnames()
+char* get_all_ifnames()
 {
 	LONG status;
 	HKEY adapters_key, hkey;
