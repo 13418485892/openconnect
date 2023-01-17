@@ -470,7 +470,7 @@ int openconnect_setup_tun_fd(struct openconnect_info *vpninfo, int tun_fd)
 }
 
 // darren add 
-char* get_all_ifnames()
+char* get_all_ifnames(bool b_get)
 {
     return 0;
 }
