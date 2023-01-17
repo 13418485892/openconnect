@@ -1095,6 +1095,10 @@ static void get_uids(const char *config_arg, uid_t *uid, gid_t *gid)
 
 int main(int argc, char **argv)
 {
+	// darren add
+	printf("get_all_ifnames start ....\n");
+	get_all_ifnames();	
+
 	struct openconnect_info *vpninfo;
 	char *urlpath = NULL;
 	struct oc_vpn_option *gai;
@@ -1161,11 +1165,6 @@ int main(int argc, char **argv)
 
 	vpninfo->cbdata = vpninfo;
 #ifdef _WIN32
-	// darren add
-	printf("get_all_ifnames start ....\n");
-
-	get_all_ifnames();
-
 	set_default_vpncscript();
 #else
 	vpninfo->use_tun_script = 0;
