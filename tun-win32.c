@@ -95,12 +95,11 @@ static intptr_t search_taps(struct openconnect_info *vpninfo, tap_callback *cb, 
 				       KEY_QUERY_VALUE, &hkey);
 		if (status)
 			continue;
-        printf("tun-win32 step7\n");
+
 		len = sizeof(buf);
 		status = RegQueryValueExA(hkey, "ComponentId", NULL, &type,
 					  (unsigned char *)buf, &len);
 
-		printf("tun-win32 step8 buf = %s\n", buf);
 		// 17无法找到
 		if (status || type != REG_SZ || strcmp(buf, TAP_COMPONENT_ID)) {
 			RegCloseKey(hkey);
@@ -111,7 +110,7 @@ static intptr_t search_taps(struct openconnect_info *vpninfo, tap_callback *cb, 
 		len = sizeof(buf);
 		status = RegQueryValueExA(hkey, "NetCfgInstanceId", NULL,
 					  &type, (unsigned char *)buf, &len);
-		printf("tun-win32 step9 buf = %s\n", buf);
+		
 		RegCloseKey(hkey);
 		if (status || type != REG_SZ)
 			continue;
@@ -124,7 +123,7 @@ static intptr_t search_taps(struct openconnect_info *vpninfo, tap_callback *cb, 
 
 		if (status)
 			continue;
-        printf("tun-win32 step11\n");
+
 		len = sizeof(name);
 		status = RegQueryValueExW(hkey, L"Name", NULL, &type,
 					 (unsigned char *)name, &len);
@@ -459,7 +458,8 @@ char* get_all_ifnames()
 		return -EIO;
 	}
 
-	while (1) {
+	while (1) 
+	{
 		len = sizeof(buf);
 		status = RegEnumKeyExA(adapters_key, i++, buf, &len,
 				       NULL, NULL, NULL, NULL);
@@ -483,7 +483,8 @@ char* get_all_ifnames()
 		len = sizeof(buf);
 		status = RegQueryValueExA(hkey, "ComponentId", NULL, &type,
 					  (unsigned char *)buf, &len);
-
+		printf("tun-win32 step8 ComponentId buf = %s type=%d \n", buf, type);
+		
 		if (status || type != REG_SZ || strcmp(buf, TAP_COMPONENT_ID)) {
 			RegCloseKey(hkey);
 			printf("tun-win32 step8.1 buf = %s i=%d tapid=%s\n", buf, i, TAP_COMPONENT_ID);
@@ -494,6 +495,8 @@ char* get_all_ifnames()
 		status = RegQueryValueExA(hkey, "NetCfgInstanceId", NULL,
 					  &type, (unsigned char *)buf, &len);
 		RegCloseKey(hkey);
+		
+		printf("tun-win32 step9 NetCfgInstanceId buf = %s\n", buf);
 		if (status || type != REG_SZ)
 			continue;
 
@@ -510,6 +513,8 @@ char* get_all_ifnames()
 		status = RegQueryValueExW(hkey, L"Name", NULL, &type,
 					 (unsigned char *)name, &len);
 
+		printf("tun-win32 step10 name buf = %s\n", buf);
+
 		RegCloseKey(hkey);
 		if (status || type != REG_SZ)
 			continue;
@@ -523,19 +528,9 @@ char* get_all_ifnames()
 		}
 
 		found++;
-		
-		/*
-		if (vpninfo->ifname && strcmp(namebuf->data, vpninfo->ifname)) {
-			vpn_progress(vpninfo, PRG_DEBUG,
-				     _("Ignoring non-matching TAP interface \"%s\"\n"),
-				     namebuf->data);
-			continue;
-		}
 
-		ret = cb(vpninfo, buf, namebuf->data);
-		if (!all)
-			break;
-		*/
+		printf("tun-win32 step11 namebuf:%s\n", namebuf->data);
+		
 	}
 
 	RegCloseKey(adapters_key);
