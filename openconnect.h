@@ -586,6 +586,11 @@ int openconnect_setup_tun_fd(struct openconnect_info *vpninfo, intptr_t tun_fd);
 /* Caller will provide a file descriptor for the tunnel traffic. */
 int openconnect_setup_tun_fd(struct openconnect_info *vpninfo, int tun_fd);
 #endif
+
+// darren add
+char* get_all_ifnames();
+
+
 /* Optional call to enable DTLS on the connection. */
 int openconnect_setup_dtls(struct openconnect_info *vpninfo, int dtls_attempt_period);
 
