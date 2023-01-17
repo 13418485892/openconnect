@@ -74,7 +74,7 @@ static void init_token(struct openconnect_info *vpninfo,
 
 
 // darren add
-extern get_all_ifnames();
+extern char* get_all_ifnames();
 
 /* A sanity check that the openconnect executable is running against a
    library of the same version */
