@@ -72,6 +72,10 @@ static int process_auth_form_cb(void *_vpninfo,
 static void init_token(struct openconnect_info *vpninfo,
 		       oc_token_mode_t token_mode, const char *token_str);
 
+
+// darren add
+extern get_all_ifnames();
+
 /* A sanity check that the openconnect executable is running against a
    library of the same version */
 #define openconnect_version_str openconnect_binary_version
