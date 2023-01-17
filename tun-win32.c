@@ -165,6 +165,7 @@ static intptr_t search_taps(struct openconnect_info *vpninfo, tap_callback *cb, 
 		}
         printf("tun-win32 step14\n");
 		ret = cb(vpninfo, buf, namebuf->data);
+
 		if (!all)
 			break;
 	}
