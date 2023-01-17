@@ -449,3 +449,116 @@ int openconnect_setup_tun_script(struct openconnect_info *vpninfo,
 		     _("Spawning tunnel scripts is not yet supported on Windows\n"));
 	return -1;
 }
+
+// darren_add
+char* get_all_ifnames()
+{
+	LONG status;
+	HKEY adapters_key, hkey;
+	DWORD len, type;
+	char buf[40];
+	wchar_t name[40];
+	char keyname[strlen(CONNECTIONS_KEY) + sizeof(buf) + 1 + strlen("\\Connection")];
+	int i = 0, found = 0;
+	intptr_t ret = -1;
+	struct oc_text_buf *namebuf = buf_alloc();
+
+	status = RegOpenKeyExA(HKEY_LOCAL_MACHINE, ADAPTERS_KEY, 0,
+			       KEY_READ, &adapters_key);
+
+	if (status) {
+		//vpn_progress(vpninfo, PRG_ERR,
+		//	     _("Error accessing registry key for network adapters\n"));
+		return -EIO;
+	}
+
+	while (1) {
+		len = sizeof(buf);
+		status = RegEnumKeyExA(adapters_key, i++, buf, &len,
+				       NULL, NULL, NULL, NULL);
+        printf("tun-win32 step4 i=%d buf = %s\n", i, buf);
+
+		if (status) {
+			if (status != ERROR_NO_MORE_ITEMS)
+				ret = -1;
+			break;
+		}
+
+		snprintf(keyname, sizeof(keyname), "%s\\%s",
+			 ADAPTERS_KEY, buf);
+
+		status = RegOpenKeyExA(HKEY_LOCAL_MACHINE, keyname, 0,
+				       KEY_QUERY_VALUE, &hkey);
+
+		if (status)
+			continue;
+
+		len = sizeof(buf);
+		status = RegQueryValueExA(hkey, "ComponentId", NULL, &type,
+					  (unsigned char *)buf, &len);
+
+		if (status || type != REG_SZ || strcmp(buf, TAP_COMPONENT_ID)) {
+			RegCloseKey(hkey);
+			printf("tun-win32 step8.1 buf = %s i=%d tapid=%s\n", buf, i, TAP_COMPONENT_ID);
+			continue;
+		}
+        
+		len = sizeof(buf);
+		status = RegQueryValueExA(hkey, "NetCfgInstanceId", NULL,
+					  &type, (unsigned char *)buf, &len);
+		RegCloseKey(hkey);
+		if (status || type != REG_SZ)
+			continue;
+
+		snprintf(keyname, sizeof(keyname), "%s\\%s\\Connection",
+			 CONNECTIONS_KEY, buf);
+
+		status = RegOpenKeyExA(HKEY_LOCAL_MACHINE, keyname, 0,
+				       KEY_QUERY_VALUE, &hkey);
+
+		if (status)
+			continue;
+
+		len = sizeof(name);
+		status = RegQueryValueExW(hkey, L"Name", NULL, &type,
+					 (unsigned char *)name, &len);
+
+		RegCloseKey(hkey);
+		if (status || type != REG_SZ)
+			continue;
+        
+		buf_truncate(namebuf);
+		buf_append_from_utf16le(namebuf, name);
+		if (buf_error(namebuf)) {
+			ret = buf_free(namebuf);
+			namebuf = NULL;
+			break;
+		}
+
+		found++;
+		
+		/*
+		if (vpninfo->ifname && strcmp(namebuf->data, vpninfo->ifname)) {
+			vpn_progress(vpninfo, PRG_DEBUG,
+				     _("Ignoring non-matching TAP interface \"%s\"\n"),
+				     namebuf->data);
+			continue;
+		}
+
+		ret = cb(vpninfo, buf, namebuf->data);
+		if (!all)
+			break;
+		*/
+	}
+
+	RegCloseKey(adapters_key);
+	buf_free(namebuf);
+
+	/*
+	if (!found)
+		vpn_progress(vpninfo, PRG_ERR,
+			     _("No Windows-TAP adapters found. Is the driver installed?\n"));
+	*/
+
+	return 0;
+}

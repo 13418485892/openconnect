@@ -578,6 +578,9 @@ int openconnect_setup_tun_device(struct openconnect_info *vpninfo,
 /* Pass traffic to a script program (no tun device). */
 int openconnect_setup_tun_script(struct openconnect_info *vpninfo,
 				 const char *tun_script);
+                 
+// darren add
+char* get_all_ifnames();
 
 #ifdef _WIN32
 /* Caller will provide an overlap-capable handle for the tunnel traffic. */
