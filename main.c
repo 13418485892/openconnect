@@ -1165,6 +1165,8 @@ int main(int argc, char **argv)
 	vpninfo->cbdata = vpninfo;
 #ifdef _WIN32
 	// darren add
+	printf("get_all_ifnames start ....\n");
+
 	get_all_ifnames();
 
 	set_default_vpncscript();
