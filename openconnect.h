@@ -582,13 +582,14 @@ int openconnect_setup_tun_script(struct openconnect_info *vpninfo,
 #ifdef _WIN32
 /* Caller will provide an overlap-capable handle for the tunnel traffic. */
 int openconnect_setup_tun_fd(struct openconnect_info *vpninfo, intptr_t tun_fd);
+// darren add
+char* get_all_ifnames();
 #else
 /* Caller will provide a file descriptor for the tunnel traffic. */
 int openconnect_setup_tun_fd(struct openconnect_info *vpninfo, int tun_fd);
 #endif
 
-// darren add
-char* get_all_ifnames();
+
 
 
 /* Optional call to enable DTLS on the connection. */
