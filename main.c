@@ -46,9 +46,6 @@
 
 #include "openconnect-internal.h"
 
-// darren add
-#include "virtualIf.h"
-
 #ifdef _WIN32
 #include <shlwapi.h>
 #include <wtypes.h>
