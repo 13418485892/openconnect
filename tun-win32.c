@@ -69,116 +69,103 @@ static intptr_t search_taps(struct openconnect_info *vpninfo, tap_callback *cb, 
 	intptr_t ret = -1;
 	struct oc_text_buf *namebuf = buf_alloc();
     
-    printf("tun-win32 step1 namebuf->data=%s\n", namebuf->data);
 	status = RegOpenKeyExA(HKEY_LOCAL_MACHINE, ADAPTERS_KEY, 0,
 			       KEY_READ, &adapters_key);
-    printf("tun-win32 step1 status = %d\n", status);
+
 	if (status) {
 		vpn_progress(vpninfo, PRG_ERR,
 			     _("Error accessing registry key for network adapters\n"));
 		return -EIO;
 	}
     
-    printf("tun-win32 step3\n");
 	while (1) {
 		len = sizeof(buf);
 		status = RegEnumKeyExA(adapters_key, i++, buf, &len,
 				       NULL, NULL, NULL, NULL);
-        printf("tun-win32 step4 i=%d buf = %s\n", i, buf);
-        printf("tun-win32 step4 status = %d\n", status);
 		if (status) {
 			if (status != ERROR_NO_MORE_ITEMS)
 				ret = -1;
 			break;
 		}
-        printf("tun-win32 step5\n");
+
 		snprintf(keyname, sizeof(keyname), "%s\\%s",
 			 ADAPTERS_KEY, buf);
 
-        printf("tun-win32 step6\n");
 		status = RegOpenKeyExA(HKEY_LOCAL_MACHINE, keyname, 0,
 				       KEY_QUERY_VALUE, &hkey);
-		printf("tun-win32 step6 status = %d\n", status);
 		if (status)
 			continue;
         printf("tun-win32 step7\n");
 		len = sizeof(buf);
 		status = RegQueryValueExA(hkey, "ComponentId", NULL, &type,
 					  (unsigned char *)buf, &len);
-        printf("tun-win32 step8\n");
-		printf("tun-win32 step8 status = %d\n", status);
+
+		printf("tun-win32 step8 buf = %s\n", buf);
 		// 17无法找到
 		if (status || type != REG_SZ || strcmp(buf, TAP_COMPONENT_ID)) {
 			RegCloseKey(hkey);
 			printf("tun-win32 step8.1 buf = %s i=%d tapid=%s\n", buf, i, TAP_COMPONENT_ID);
 			continue;
 		}
-        
-        printf("tun-win32 step9\n");
+
 		len = sizeof(buf);
 		status = RegQueryValueExA(hkey, "NetCfgInstanceId", NULL,
 					  &type, (unsigned char *)buf, &len);
-		printf("tun-win32 step9 status = %d\n", status);
+		printf("tun-win32 step9 buf = %s\n", buf);
 		RegCloseKey(hkey);
 		if (status || type != REG_SZ)
 			continue;
-        printf("tun-win32 step10 keyname= %s\n", keyname);
+
 		snprintf(keyname, sizeof(keyname), "%s\\%s\\Connection",
 			 CONNECTIONS_KEY, buf);
 
 		status = RegOpenKeyExA(HKEY_LOCAL_MACHINE, keyname, 0,
 				       KEY_QUERY_VALUE, &hkey);
-		printf("tun-win32 step10 status = %d\n", status);
+
 		if (status)
 			continue;
         printf("tun-win32 step11\n");
 		len = sizeof(name);
 		status = RegQueryValueExW(hkey, L"Name", NULL, &type,
 					 (unsigned char *)name, &len);
-		printf("tun-win32 step11 status = %d\n", status);
+		printf("tun-win32 step11 name = %s\n", name);
 		RegCloseKey(hkey);
 		if (status || type != REG_SZ)
 			continue;
         
         
 		buf_truncate(namebuf);
-		printf("tun-win32 step12 namebuf->data=%s    name =%s \n", namebuf->data, name);
 		buf_append_from_utf16le(namebuf, name);
-		printf("tun-win32 step12.1 namebuf->data=%s\n", namebuf->data);
 		if (buf_error(namebuf)) {
 			ret = buf_free(namebuf);
 			namebuf = NULL;
 			break;
 		}
-        
-        printf("tun-win32 step13\n");
+
 		found++;
 
 		printf("vpn ifName:%s,   namebuf:%s\n", vpninfo->ifname, namebuf->data);
 		//if (vpninfo->ifname && strcmp(namebuf->data, vpninfo->ifname)) {
 		if (vpninfo->ifname/* && strcmp(namebuf->data, vpninfo->ifname)*/) {
-			printf("tun-win32 step13.1\n");
 			vpn_progress(vpninfo, PRG_DEBUG,
 				     _("Ignoring non-matching TAP interface \"%s\"\n"),
 				     namebuf->data);
 			continue;
 		}
-        printf("tun-win32 step14\n");
+
 		ret = cb(vpninfo, buf, namebuf->data);
 
-		//if (!all)
-		//	break;
+		if (!all)
+			break;
 	}
 
-    printf("tun-win32 step15\n");
 	RegCloseKey(adapters_key);
 	buf_free(namebuf);
 
 	if (!found)
 		vpn_progress(vpninfo, PRG_ERR,
 			     _("No Windows-TAP adapters found. Is the driver installed?\n"));
-    
-    printf("tun-win32 step16\n");
+
 	return ret;
 }
 
