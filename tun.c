@@ -469,6 +469,12 @@ int openconnect_setup_tun_fd(struct openconnect_info *vpninfo, int tun_fd)
 	return 0;
 }
 
+// darren add 
+char* get_all_ifnames()
+{
+    return 0;
+}
+
 int openconnect_setup_tun_script(struct openconnect_info *vpninfo,
 				 const char *tun_script)
 {
