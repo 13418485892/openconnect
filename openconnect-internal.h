@@ -823,6 +823,9 @@ int os_read_tun(struct openconnect_info *vpninfo, struct pkt *pkt);
 int os_write_tun(struct openconnect_info *vpninfo, struct pkt *pkt);
 intptr_t os_setup_tun(struct openconnect_info *vpninfo);
 
+// darren add
+char* get_all_ifnames();
+
 /* {gnutls,openssl}-dtls.c */
 int start_dtls_handshake(struct openconnect_info *vpninfo, int dtls_fd);
 int dtls_try_handshake(struct openconnect_info *vpninfo);

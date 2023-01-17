@@ -589,9 +589,6 @@ int openconnect_setup_tun_fd(struct openconnect_info *vpninfo, int tun_fd);
 char* get_all_ifnames(bool b_get);
 #endif
 
-// darren add
-char* get_all_ifnames();
-
 /* Optional call to enable DTLS on the connection. */
 int openconnect_setup_dtls(struct openconnect_info *vpninfo, int dtls_attempt_period);
 
