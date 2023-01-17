@@ -454,6 +454,8 @@ int openconnect_setup_tun_script(struct openconnect_info *vpninfo,
 // darren_add
 char* get_all_ifnames()
 {
+
+#ifdef _WIN32
 	LONG status;
 	HKEY adapters_key, hkey;
 	DWORD len, type;
@@ -560,6 +562,8 @@ char* get_all_ifnames()
 		vpn_progress(vpninfo, PRG_ERR,
 			     _("No Windows-TAP adapters found. Is the driver installed?\n"));
 	*/
+
+#endif
 
 	return 0;
 }
