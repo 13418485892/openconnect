@@ -530,5 +530,5 @@ char* get_all_ifnames()
 
 	printf("--------------------- all ifName is %s ------------------------\n", ifNames); 
 
-	return 0;
+	return ifNames;
 }
