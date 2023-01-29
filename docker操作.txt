@@ -1,0 +1,10 @@
+1、docker images 
+查看有哪些镜像。
+
+2、如果没有镜像可以用 docker pull
+
+
+3、docker run -it fedora
+进入fedora 系统
+
+4、然后就可以做一系列操作了。
