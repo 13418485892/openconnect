@@ -1096,8 +1096,8 @@ static void get_uids(const char *config_arg, uid_t *uid, gid_t *gid)
 int main(int argc, char **argv)
 {
 	// darren add
-	printf("get_all_ifnames start ....\n");
-	get_all_ifnames();	
+	// printf("get_all_ifnames start ....\n");
+	// get_all_ifnames();	
 
 	struct openconnect_info *vpninfo;
 	char *urlpath = NULL;
