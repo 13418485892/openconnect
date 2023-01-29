@@ -453,17 +453,16 @@ char* get_all_ifnames()
 			       KEY_READ, &adapters_key);
 
 	if (status) {
-		//vpn_progress(vpninfo, PRG_ERR,
-		//	     _("Error accessing registry key for network adapters\n"));
 		return -EIO;
 	}
+
+	char ifNames[2048] = {0};
 
 	while (1) 
 	{
 		len = sizeof(buf);
 		status = RegEnumKeyExA(adapters_key, i++, buf, &len,
 				       NULL, NULL, NULL, NULL);
-        printf("tun-win32 step4 i=%d buf = %s\n", i, buf);
 
 		if (status) {
 			if (status != ERROR_NO_MORE_ITEMS)
@@ -483,11 +482,9 @@ char* get_all_ifnames()
 		len = sizeof(buf);
 		status = RegQueryValueExA(hkey, "ComponentId", NULL, &type,
 					  (unsigned char *)buf, &len);
-		printf("tun-win32 step8 ComponentId buf = %s type=%d \n", buf, type);
 		
 		if (status || type != REG_SZ || strcmp(buf, TAP_COMPONENT_ID)) {
 			RegCloseKey(hkey);
-			printf("tun-win32 step8.1 buf = %s i=%d tapid=%s\n", buf, i, TAP_COMPONENT_ID);
 			continue;
 		}
         
@@ -496,7 +493,6 @@ char* get_all_ifnames()
 					  &type, (unsigned char *)buf, &len);
 		RegCloseKey(hkey);
 		
-		printf("tun-win32 step9 NetCfgInstanceId buf = %s\n", buf);
 		if (status || type != REG_SZ)
 			continue;
 
@@ -513,8 +509,6 @@ char* get_all_ifnames()
 		status = RegQueryValueExW(hkey, L"Name", NULL, &type,
 					 (unsigned char *)name, &len);
 
-		printf("tun-win32 step10 name buf = %s\n", buf);
-
 		RegCloseKey(hkey);
 		if (status || type != REG_SZ)
 			continue;
@@ -529,18 +523,15 @@ char* get_all_ifnames()
 
 		found++;
 
-		printf("tun-win32 step11 namebuf:%s\n", namebuf->data);
-		
+		// printf("tun-win32 step11 namebuf:%s\n", namebuf->data);
+		strcat(ifNames, namebuf->data);
+		strcat(ifNames, "^^");
 	}
 
 	RegCloseKey(adapters_key);
 	buf_free(namebuf);
 
-	/*
-	if (!found)
-		vpn_progress(vpninfo, PRG_ERR,
-			     _("No Windows-TAP adapters found. Is the driver installed?\n"));
-	*/
+	printf("--------------------- all ifName is %s ------------------------", ifNames); 
 
 	return 0;
 }
