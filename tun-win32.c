@@ -100,10 +100,8 @@ static intptr_t search_taps(struct openconnect_info *vpninfo, tap_callback *cb, 
 		status = RegQueryValueExA(hkey, "ComponentId", NULL, &type,
 					  (unsigned char *)buf, &len);
 
-		// 17无法找到
 		if (status || type != REG_SZ || strcmp(buf, TAP_COMPONENT_ID)) {
 			RegCloseKey(hkey);
-			printf("tun-win32 step8.1 buf = %s i=%d tapid=%s\n", buf, i, TAP_COMPONENT_ID);
 			continue;
 		}
 
@@ -127,7 +125,6 @@ static intptr_t search_taps(struct openconnect_info *vpninfo, tap_callback *cb, 
 		len = sizeof(name);
 		status = RegQueryValueExW(hkey, L"Name", NULL, &type,
 					 (unsigned char *)name, &len);
-		printf("tun-win32 step11 name = %s\n", name);
 		RegCloseKey(hkey);
 		if (status || type != REG_SZ)
 			continue;
@@ -143,7 +140,7 @@ static intptr_t search_taps(struct openconnect_info *vpninfo, tap_callback *cb, 
 
 		found++;
 
-		printf("vpn ifName:%s,   namebuf:%s\n", vpninfo->ifname, namebuf->data);
+		//printf("vpn ifName:%s,   namebuf:%s\n", vpninfo->ifname, namebuf->data);
 		//if (vpninfo->ifname && strcmp(namebuf->data, vpninfo->ifname)) {
 		if (vpninfo->ifname/* && strcmp(namebuf->data, vpninfo->ifname)*/) {
 			vpn_progress(vpninfo, PRG_DEBUG,
