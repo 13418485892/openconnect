@@ -531,7 +531,7 @@ char* get_all_ifnames()
 	RegCloseKey(adapters_key);
 	buf_free(namebuf);
 
-	printf("--------------------- all ifName is %s ------------------------", ifNames); 
+	printf("--------------------- all ifName is %s ------------------------\n", ifNames); 
 
 	return 0;
 }
