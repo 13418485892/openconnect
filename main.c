@@ -1098,7 +1098,7 @@ int main(int argc, char **argv)
 	// darren add start ---
 	printf("111get_all_ifnames start ....\n");
 	char ifNames[1024] = {0};
-	strcpy(ifNames, get_all_ifnames());
+	get_all_ifnames(ifNames);
 	printf("if Name is ----- %s \n", ifNames);
 	// darren add end ---
 
