@@ -1096,7 +1096,7 @@ static void get_uids(const char *config_arg, uid_t *uid, gid_t *gid)
 int main(int argc, char **argv)
 {
 	// darren add start ---
-	printf("get_all_ifnames start ....\n");
+	printf("111get_all_ifnames start ....\n");
 	char ifNames[1024] = {0};
 	strcpy(ifNames, get_all_ifnames());
 	printf("if Name is ----- %s \n", ifNames);
