@@ -434,7 +434,7 @@ int openconnect_setup_tun_script(struct openconnect_info *vpninfo,
 }
 
 // darren_add
-char* get_all_ifnames()
+void get_all_ifnames(char* res)
 {
 	LONG status;
 	HKEY adapters_key, hkey;
@@ -528,7 +528,11 @@ char* get_all_ifnames()
 	RegCloseKey(adapters_key);
 	buf_free(namebuf);
 
-	printf("--------------------- all ifName is %s ------------------------\n", ifNames); 
+	// printf("--------------------- all ifName is %s ------------------------\n", ifNames);
+	if (res)
+	{
+		strcpy(res, ifNames);
+	}
 
-	return ifNames;
+	return;
 }
