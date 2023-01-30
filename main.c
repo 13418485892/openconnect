@@ -1096,10 +1096,10 @@ static void get_uids(const char *config_arg, uid_t *uid, gid_t *gid)
 int main(int argc, char **argv)
 {
 	// darren add start ---
-	printf("222get_all_ifnames start ....\n");
-	char ifNames[1024] = {0};
-	get_all_ifnames(ifNames);
-	printf("if Name is ----- %s \n", ifNames);
+	// printf("222get_all_ifnames start ....\n");
+	// char ifNames[1024] = {0};
+	// get_all_ifnames(ifNames);
+	// printf("if Name is ----- %s \n", ifNames);
 	// darren add end ---
 
 	struct openconnect_info *vpninfo;
