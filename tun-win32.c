@@ -100,7 +100,8 @@ static intptr_t search_taps(struct openconnect_info *vpninfo, tap_callback *cb, 
 		status = RegQueryValueExA(hkey, "ComponentId", NULL, &type,
 					  (unsigned char *)buf, &len);
 
-		if (status || type != REG_SZ || strcmp(buf, TAP_COMPONENT_ID)) {
+		//if (status || type != REG_SZ || strcmp(buf, TAP_COMPONENT_ID)) {
+		if (status || type != REG_SZ || (!strstr(buf, TAP_COMPONENT_ID))) {
 			RegCloseKey(hkey);
 			continue;
 		}
